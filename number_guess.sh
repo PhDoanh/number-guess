@@ -14,13 +14,13 @@ EXISTING_USER=$($PSQL "SELECT * FROM users WHERE username = '$USERNAME';")
 if [[ -z $EXISTING_USER ]]; then
 	echo "Welcome, $USERNAME! It looks like this is your first time here."
 	# add new user
-  $PSQL "INSERT INTO users (username, games_played, best_game) VALUES ('$USERNAME', 0, 0);"
+  INSERT_RESULT=$($PSQL "INSERT INTO users (username, games_played, best_game) VALUES ('$USERNAME', 1, 2147483647);")
 else
 	GAMES_PLAYED=$($PSQL "SELECT games_played FROM users WHERE username = '$USERNAME';")
 	BEST_GAME=$($PSQL "SELECT best_game FROM users WHERE username = '$USERNAME';")
 	echo "Welcome back, $USERNAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses."
 	# update total of game play
-  $PSQL "UPDATE users SET games_played = games_played + 1 WHERE username = '$USERNAME';"
+  UPDATE_RESULT=$($PSQL "UPDATE users SET games_played = games_played + 1 WHERE username = '$USERNAME';")
 fi
 
 # get user number
@@ -43,9 +43,10 @@ while [[ $GUESS -ne $SECRET_NUMBER ]]; do
   # count number of guesses
 	(( GUESSES++ ))
 done
+(( GUESSES++ ))
 
 # update user best game
-$PSQL "UPDATE users SET best_game = LEAST(best_game, $GUESSES) WHERE username = '$USERNAME';"
+UPDATE_RESULT=$($PSQL "UPDATE users SET best_game = LEAST(best_game, $GUESSES) WHERE username = '$USERNAME';")
 echo "You guessed it in $GUESSES tries. The secret number was $SECRET_NUMBER. Nice job!"
 
 
