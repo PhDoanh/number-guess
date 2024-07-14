@@ -38,3 +38,4 @@ done
 $PSQL "UPDATE users SET best_game = LEAST(best_game, $GUESSES) WHERE username = '$USERNAME';"
 echo "You guessed it in $GUESSES tries. The secret number was $SECRET_NUMBER. Nice job!"
 
+
