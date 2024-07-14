@@ -14,7 +14,7 @@ EXISTING_USER=$($PSQL "SELECT * FROM users WHERE username = '$USERNAME';")
 if [[ -z $EXISTING_USER ]]; then
 	echo "Welcome, $USERNAME! It looks like this is your first time here."
 	# add new user
-  $PSQL "INSERT INTO users (username, games_played, best_game) VALUES ('$NAME', 0, 0);"
+  $PSQL "INSERT INTO users (username, games_played, best_game) VALUES ('$USERNAME', 0, 0);"
 else
 	GAMES_PLAYED=$($PSQL "SELECT games_played FROM users WHERE username = '$USERNAME';")
 	BEST_GAME=$($PSQL "SELECT best_game FROM users WHERE username = '$USERNAME';")
